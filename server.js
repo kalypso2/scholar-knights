@@ -34,12 +34,11 @@ const transporter = nodemailer.createTransport({
                 pass: '4331C0pp'
         }
 });
+//creating token for verfication link
 const token = jwt.sign({
         data: 'Token Data'  .
     }, 'secretKey', { expiresIn: '10m' }  
 );    
-
-
 
 
 //  Register Route
@@ -53,24 +52,39 @@ app.post('/api/register', async (req, res) => {
     const newUser = new User({ first_name, last_name, email, username, password, groups });
     await newUser.save();
 
-    //email verification
-    const verificationMessage = {
+    res.status(201).json({ message: "User registered successfully" });
+    //email verification sent
+      const verificationMessage = {
       from:'scholarknightsucf@gmail.com',
       to: email
       subject:"Verify your Account"
       text: "Click the link to verify your email address http://www.scholarknights.com/verify/${token}"
     };
-    transporter.sendMail(mailConfigurations, function(error, info){
+    transporter.sendMail(verificationMessage,function(error, info){
       if (error) throw Error(error);
       console.log('Email Sent Successfully');
       console.log(info);
     });
-  //success
-    res.status(201).json({ message: "User registered successfully" });
+  
   } catch (error) {
     console.error(" Register API error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
+});
+
+//Verification Route
+app.get('/verify/:token', (req, res)=>{
+    const {token} = req.params;
+    // Verifying the JWT token 
+    jwt.verify(token, 'secretKey', function(err, decoded) {
+        if (err) {
+            console.log(err);
+            res.send("Email verification failed");
+        }
+        else {
+            res.send("Email verifified successfully");
+        }
+    });
 });
 
 //  Login Route
