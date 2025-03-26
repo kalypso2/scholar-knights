@@ -56,8 +56,8 @@ app.post('/api/register', async (req, res) => {
     //email verification sent
       const verificationMessage = {
       from:'scholarknightsucf@gmail.com',
-      to: email
-      subject:"Verify your Account"
+      to: email,
+      subject:"Verify your Account",
       text: "Click the link to verify your email address http://www.scholarknights.com/verify/${token}"
     };
     transporter.sendMail(verificationMessage,function(error, info){
