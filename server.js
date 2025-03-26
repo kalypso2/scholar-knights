@@ -24,7 +24,19 @@ const UserSchema = new mongoose.Schema({
   groups: [mongoose.Schema.Types.Mixed],	
 });
 
+//  Define Group Schema
+const GroupSchema = new mongoose.Schema({
+  title: String,
+  course: String,
+  location: String,
+  capacity: Number,
+  time: String, 
+  date: Date,
+  members: [String], //array of usernames
+});
+
 const User = mongoose.model('User', UserSchema);
+const Group = mongoose.model('Group',GroupSchema);
 
 // setting up email object for registering new users
 const transporter = nodemailer.createTransport({
@@ -107,11 +119,20 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+
+
 app.post('/api/addgroup', async (req, res) => {
   var error = '';
-  const {userId,course,time,location,capacity,title} = req.body;
-  const newGroup = {Title:title,Course:course,Location:location,Capacity:capacity,Time:time,UserId:userId}
-  
+  const {title,course,location,capacity,time,date,members} = req.body;
+  const newGroup = new Group({Title:title,Course:course,Location:location,Capacity:capacity,Time:time,Date:date,Members:members});
+    try
+    {
+      newGroup.save();
+    }
+    catch (e)
+    {
+      error = e.toString();
+    }
 });
 
 //  Basic Test Route
