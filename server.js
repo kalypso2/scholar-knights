@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,22 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 
+// setting up email object for registering new users
+const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth:{
+                user: 'scholarknightsucf@gmail.com',
+                pass: '4331C0pp'
+        }
+});
+const token = jwt.sign({
+        data: 'Token Data'  .
+    }, 'secretKey', { expiresIn: '10m' }  
+);    
+
+
+
+
 //  Register Route
 app.post('/api/register', async (req, res) => {
   const { first_name, last_name, email, username, password, groups } = req.body;
@@ -36,6 +53,19 @@ app.post('/api/register', async (req, res) => {
     const newUser = new User({ first_name, last_name, email, username, password, groups });
     await newUser.save();
 
+    //email verification
+    const verificationMessage = {
+      from:'scholarknightsucf@gmail.com',
+      to: email
+      subject:"Verify your Account"
+      text: "Click the link to verify your email address http://www.scholarknights.com/verify/${token}"
+    };
+    transporter.sendMail(mailConfigurations, function(error, info){
+      if (error) throw Error(error);
+      console.log('Email Sent Successfully');
+      console.log(info);
+    });
+  //success
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error(" Register API error:", error);
@@ -61,6 +91,13 @@ app.post('/api/login', async (req, res) => {
     console.error(" Login API error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
+});
+
+app.post('/api/addgroup', async (req, res) => {
+  var error = '';
+  const {userId,course,time,location,capacity,title} = req.body;
+  const newGroup = {Title:title,Course:course,Location:location,Capacity:capacity,Time:time,UserId:userId}
+  
 });
 
 //  Basic Test Route
