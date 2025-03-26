@@ -33,24 +33,21 @@ const GroupSchema = new mongoose.Schema({
   time: String, 
   date: Date,
   members: [String], //array of usernames
+  privacy: Boolean, //private is true public is false
 });
 
 const User = mongoose.model('User', UserSchema);
 const Group = mongoose.model('Group',GroupSchema);
 
 // setting up email object for registering new users
-const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({ 
         service: 'gmail',
         auth:{
                 user: 'scholarknightsucf@gmail.com',
                 pass: '4331C0pp'
         }
 });
-//creating token for verfication link
-const token = jwt.sign({
-        data: 'Token Data'  .
-    }, 'secretKey', { expiresIn: '10m' }  
-);    
+
 
 
 //  Register Route
@@ -65,13 +62,16 @@ app.post('/api/register', async (req, res) => {
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
-    //email verification sent
+    //creating token for verfication link
+        const token = jwt.sign({data: 'Token Data'},'secretKey',{expiresIn:'10m'});    
+    //email content
       const verificationMessage = {
       from:'scholarknightsucf@gmail.com',
       to: email,
       subject:"Verify your Account",
-      text: "Click the link to verify your email address http://www.scholarknights.com/verify/${token}"
+      text: "Click the link to verify your email address: http://www.scholarknights.com/verify/${token}"
     };
+    //email verification sent
     transporter.sendMail(verificationMessage,function(error, info){
       if (error) throw Error(error);
       console.log('Email Sent Successfully');
@@ -141,7 +141,7 @@ app.get("/", (req, res) => {
 });
 
 //  Start Server
-const PORT = 80;
+const PORT = 50;
 
 app.listen(PORT, '0.0.0.0', () => console.log(` Server running on port ${PORT}`));
 
