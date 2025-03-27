@@ -32,7 +32,7 @@ const GroupSchema = new mongoose.Schema({
   capacity: Number,
   time: String, 
   date: Date,
-  members: [Object], //array of users
+  members: [mongoose.Schema.Types.Mixed], //array of users
   privacy: Boolean, //private is true public is false
 });
 
@@ -58,7 +58,7 @@ app.post('/api/register', async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists" });
 
-    const newUser = new User({ first_name, last_name, email, username, password, groups });
+    const newUser = new User({ first_name, last_name, email, username, password});
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
