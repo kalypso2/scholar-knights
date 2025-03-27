@@ -32,7 +32,7 @@ const GroupSchema = new mongoose.Schema({
   capacity: Number,
   time: String, 
   date: Date,
-  members: [String], //array of usernames
+  members: [Object], //array of users
   privacy: Boolean, //private is true public is false
 });
 
@@ -141,7 +141,7 @@ app.get("/", (req, res) => {
 });
 
 //  Start Server
-const PORT = 50;
+const PORT = 80;
 
 app.listen(PORT, '0.0.0.0', () => console.log(` Server running on port ${PORT}`));
 
