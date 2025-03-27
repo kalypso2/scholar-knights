@@ -44,7 +44,7 @@ const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth:{
                 user: 'scholarknightsucf@gmail.com',
-                pass: '4331C0pp'
+                pass: 'caqj kmcc sjoj lyey'
         }
 });
 
@@ -52,7 +52,7 @@ const transporter = nodemailer.createTransport({
 
 //  Register Route
 app.post('/api/register', async (req, res) => {
-  const { first_name, last_name, email, username, password, groups } = req.body;
+  const { first_name, last_name, email, username, password} = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -69,7 +69,7 @@ app.post('/api/register', async (req, res) => {
       from:'scholarknightsucf@gmail.com',
       to: email,
       subject:"Verify your Account",
-      text: "Click the link to verify your email address: http://www.scholarknights.com/verify/${token}"
+      text: `Click the link to verify your email address: http://www.scholarknights.com/verify/${token}`
     };
     //email verification sent
     transporter.sendMail(verificationMessage,function(error, info){
@@ -94,7 +94,7 @@ app.get('/verify/:token', (req, res)=>{
             res.send("Email verification failed");
         }
         else {
-            res.send("Email verifified successfully");
+            res.send("Email verified successfully");
         }
     });
 });
