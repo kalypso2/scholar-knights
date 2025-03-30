@@ -124,7 +124,7 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/addgroup', async (req, res) => {
   var error = '';
   const {title,course,location,capacity,time,date,members} = req.body;
-  const newGroup = new Group({Title:title,Course:course,Location:location,Capacity:capacity,Time:time,Date:date,Members:members});
+  const newGroup = new Group({Title:title,Course:course,Location:location,Capacity:capacity,Time:time,Date:date,Members:members,Privacy:privacy});
     try
     {
       newGroup.save();
