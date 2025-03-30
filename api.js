@@ -1,5 +1,7 @@
 require('express');
 require('mongodb');
+const User = require("./models/user.js");
+const Group = require("./models/group.js");
 exports.setApp = function ( app, client )
 {
   //  Register Route
@@ -52,11 +54,7 @@ app.get('/verify/:token', (req, res)=>{
 
 //  Login Route
 app.post('/api/login', async (req, res) => {
-  var error = '';
   const { email, password } = req.body;
-  const db = client.db();
-  const results = await db.collection('Users').find({Email:email,Password:password}).toArray();
-
   try {
     const user = await User.findOne({ email });
 
@@ -77,7 +75,7 @@ res.json({ token, userId: user._id, email: user.email });
 app.post('/api/addgroup', async (req, res) => {
   var error = '';
   const {title,course,location,capacity,time,date,members} = req.body;
-  const newGroup = new Group({Title:title,Course:course,Location:location,Capacity:capacity,Time:time,Date:date,Members:members});
+  const newGroup = new Group({Title:title,Course:course,Location:location,Capacity:capacity,Time:time,Date:date,Members:members,Privacy:privacy});
     try
     {
       newGroup.save();
