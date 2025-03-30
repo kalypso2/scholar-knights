@@ -10,4 +10,4 @@ const GroupSchema = new mongoose.Schema({
   members: [mongoose.Schema.Types.Mixed], //array of users
   privacy: Boolean, //private is true public is false
 });
-module.exports = Group = mongoose.model('Groups', GroupSchema);
+module.exports = Group = mongoose.model('Group', GroupSchema);
