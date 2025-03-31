@@ -23,6 +23,6 @@ const UserSchema = new mongoose.Schema({
   required: true
   }, 
   courses: [String],
-  groups: [mongoose.Schema.Types.Mixed],	
+  groups: [type:mongoose.Schema.Types.ObjectId, ref:'Group'}],	
 });
 module.exports = User = mongoose.model("User", UserSchema);
