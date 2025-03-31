@@ -70,8 +70,6 @@ res.json({ token, userId: user._id, email: user.email });
   }
 });
 
-
-
 app.post('/api/addgroup', async (req, res) => {
   var error = '';
   const {title,course,location,capacity,time,date,members} = req.body;
@@ -86,4 +84,44 @@ app.post('/api/addgroup', async (req, res) => {
     }
 });
 
+app.post('/api/join-group', async (req, res) => {
+    const { userId, groupId } = req.body;
+     // Check if user and group exist
+    try {
+        const user = await User.findById(userId);
+        const group = await Group.findById(groupId);
+            if (!user || !group) {
+            return res.status(404).json({ message: 'User or Group not found' });
+            }
+        // if user is already in group
+            if (group.members.includes(userId)) {
+            return res.status(400).json({ message: 'User is already in group' });
+            }
+        group.members.push(userId);
+        user.groups.push(groupId);
+        await group.save();
+        await user.save();
+        res.status(200).json({ message: 'User successfully added to group' });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+});
+
+app.post('/api/update-profile/:userId',async(req,res)=>{
+    const{userId} = req.params;
+    const updates = req.body
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id, updates, { 
+          new: true, 
+          runValidators: true 
+        });
+        if (!updatedUser) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+});
+  
 }
