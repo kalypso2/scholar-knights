@@ -135,6 +135,20 @@ app.post('/api/addgroup', async (req, res) => {
     }
 });
 
+app.use((req, res, next) =>
+{
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader(
+'Access-Control-Allow-Headers',
+'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+);
+res.setHeader(
+'Access-Control-Allow-Methods',
+'GET, POST, PATCH, DELETE, OPTIONS'
+);
+next();
+});
+
 //  Basic Test Route
 app.get("/", (req, res) => {
   res.send("API is running...");
