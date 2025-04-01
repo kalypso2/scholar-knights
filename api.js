@@ -94,12 +94,16 @@ exports.setApp = function (app, mongoose, jwt, transporter) {
     app.post('/addgroup', async (req, res) => {
         var error = '';
         const { title, course, location, capacity, time, date, members, privacy } = req.body;
-        const newGroup = new Group({ Title: title, Course: course, Location: location, Capacity: capacity, Time: time, Date: date, Members: members, Privacy: privacy });
+
         try {
-            newGroup.save();
+            const newGroup = new Group({ title: title, course: course, location: location, capacity: capacity, time: time, date: date, members: members, privacy: privacy });
+
+            await newGroup.save();
+            res.status(201).json({ message: "Group created!", group: newGroup });
         }
-        catch (e) {
-            error = e.toString();
+        catch (error) {
+            console.error("addgroup error:", error);
+            res.status(500).json({ message: "Server error", error: error.message });
         }
     });
 
