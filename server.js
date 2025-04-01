@@ -24,11 +24,6 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log(" MongoDB Connected"))
   .catch((err) => console.error(" MongoDB Connection Error:", err));
-var api = require("./api.js");
-api.setApp(app, mongoose);
-
-const User = mongoose.model("User", UserSchema);
-const Group = mongoose.model("Group", GroupSchema);
 
 // setting up email object for registering new users
 const transporter = nodemailer.createTransport({
@@ -39,32 +34,33 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.use((req, res, next) =>
-{
+var api = require("./api.js");
+api.setApp(app, mongoose, jwt, transporter);
+
+app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
-     'Access-Control-Allow-Headers',
-     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
   res.setHeader(
-     'Access-Control-Allow-Methods',
-     'GET, POST, PATCH, DELETE, OPTIONS'
+    'Access-Control-Allow-Methods',
+    'GET, POST, PATCH, DELETE, OPTIONS'
   );
   next();
 });
 
-app.use((req, res, next) =>
-{
-res.setHeader('Access-Control-Allow-Origin', '*');
-res.setHeader(
-'Access-Control-Allow-Headers',
-'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-);
-res.setHeader(
-'Access-Control-Allow-Methods',
-'GET, POST, PATCH, DELETE, OPTIONS'
-);
-next();
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PATCH, DELETE, OPTIONS'
+  );
+  next();
 });
 
 //  Basic Test Route
