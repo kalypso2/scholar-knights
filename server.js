@@ -16,7 +16,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true // If you need to send cookies or authentication headers
 }));
-app.use(cors());
 app.options('*', cors());
 
 //  Connect to MongoDB Atlas
@@ -36,19 +35,6 @@ const transporter = nodemailer.createTransport({
 
 var api = require("./api.js");
 api.setApp(app, mongoose, jwt, transporter);
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PATCH, DELETE, OPTIONS'
-  );
-  next();
-});
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
