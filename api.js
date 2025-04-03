@@ -107,6 +107,18 @@ exports.setApp = function (app, mongoose, jwt, transporter) {
         }
     });
 
+    // Find study groups
+    // Will need to add code for filtering
+    app.get('/groups', async (req, res) => {
+        try {
+            const groups = await Group.find();
+            res.status(200).json({ groups });
+        } catch (error) {
+            console.error("GET /groups error:", error);
+            res.status(500).json({ message: "Server error", error: error.message });
+        }
+    });
+
     app.post('/test', (req, res) => {
         res.json({ message: "API is live and responding!" });
     });
