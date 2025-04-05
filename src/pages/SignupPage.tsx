@@ -1,7 +1,9 @@
-//import React from "react";
-import { SignUp } from "/root/studyapp/frontend/src/components/SignUp";
+// src/pages/SignupPage.tsx
 
-const SignupPage = () => {
+import React from "react";
+import { SignUp } from "../components/SignUp"; // Adjust if path is different
+
+const SignupPage: React.FC = () => {
   return (
     <div>
       <SignUp />

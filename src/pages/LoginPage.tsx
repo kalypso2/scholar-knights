@@ -3,7 +3,7 @@ import { Login } from "/root/studyapp/frontend/src/components/Login";
 
 const LoginPage = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Login />
     </div>
   );

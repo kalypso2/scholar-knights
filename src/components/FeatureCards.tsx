@@ -1,8 +1,12 @@
-// FeatureCards.js
-//import React from "react";
+import React from "react";
 
-const FeatureCards = () => {
-  const cards = [
+interface Card {
+  title: string;
+  description: string;
+}
+
+const FeatureCards: React.FC = () => {
+  const cards: Card[] = [
     {
       title: "Find Study Sessions",
       description:
