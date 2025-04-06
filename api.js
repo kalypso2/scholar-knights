@@ -56,6 +56,33 @@ exports.setApp = function (app, mongoose, jwt, transporter) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
     });
+
+    app.post("/resend-verification", async (req, res) => {
+        const { email } = req.body;
+        try {
+            const user = await User.findOne({ email });
+            if (!user) return res.status(404).json({ message: "User not found" });
+
+            const token = jwt.sign({ email }, "secretKey", { expiresIn: "10m" });
+            const verificationMessage = {
+                from: "scholarknightsucf@gmail.com",
+                to: email,
+                subject: "Verify your Account",
+                text: `Click the link to verify your email address: http://www.scholarknights.com/verify/${token}`,
+            };
+            transporter.sendMail(verificationMessage, (error, info) => {
+                if (error) throw Error(error);
+                console.log("Verification Email Re-Sent");
+                console.log(info);
+            });
+
+            res.status(200).json({ message: "Verification email resent successfully" });
+        } catch (error) {
+            console.error("Resend verification error:", error);
+            res.status(500).json({ message: "Server error", error: error.message });
+        }
+    });
+
     //Verification Route
     app.get('/verify/:token', (req, res) => {
         const { token } = req.params;
