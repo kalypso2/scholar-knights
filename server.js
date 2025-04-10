@@ -11,10 +11,10 @@ const GroupSchema = require('./models/group');
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'http://www.scholarknights.com', // Only allow this domain
+  origin: ['http://www.scholarknights.com', 'http://scholarknights.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // If you need to send cookies or authentication headers
+  credentials: true
 }));
 app.options('*', cors());
 
@@ -56,6 +56,16 @@ app.get("/", (req, res) => {
 
 //  Start Server
 const PORT = 5001;
+
+const path = require("path");
+
+// Serve static React files from the build directory
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+// For any other route, serve index.html so React Router can handle it
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(PORT, "0.0.0.0", () =>
   console.log(` Server running on port ${PORT}`)
