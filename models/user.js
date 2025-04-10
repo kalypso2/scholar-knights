@@ -22,7 +22,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    courses: [String],
+    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     groups: [mongoose.Schema.Types.Mixed],
+
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 module.exports = mongoose.model("User", UserSchema);
