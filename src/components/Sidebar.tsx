@@ -50,14 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
         )}
       </button>
 
-      {/* Logo / Title */}
-      <div
-        className={`bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center py-3 rounded-lg font-bold transition-all duration-300 ${
-          collapsed ? "text-sm" : "text-lg"
-        }`}
-      >
-        {collapsed ? "SK" : "Scholar Knights"}
-      </div>
+
 
       {/* Navigation Links */}
       <nav className="space-y-3 mt-4">

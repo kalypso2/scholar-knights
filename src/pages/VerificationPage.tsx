@@ -1,7 +1,6 @@
-// pages/VerificationPage.tsx
 import React from "react";
 import { useParams } from "react-router-dom";
-import Verification from "../components/Verification";
+import Verification from "../components/Verification/Verification";
 
 const VerificationPage: React.FC = () => {
   const { token } = useParams<{ token: string }>();
@@ -13,9 +12,9 @@ const VerificationPage: React.FC = () => {
           Verify Your Email
         </h1>
         {token ? (
-          <Verification token={token} />
+          <Verification />
         ) : (
-          <p className="text-red-500">Invalid verification link.</p>
+          <p className="text-red-500 text-center">Invalid verification link.</p>
         )}
       </div>
     </div>
