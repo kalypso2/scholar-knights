@@ -24,8 +24,13 @@ const UserSchema = new mongoose.Schema({
     },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     groups: [mongoose.Schema.Types.Mixed],
+    pendingGroupRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
 
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+
+    description: String,
+
+    isVerified: { type: Boolean, default: false },
 });
 module.exports = mongoose.model("User", UserSchema);
