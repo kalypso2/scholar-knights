@@ -4,27 +4,31 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
-
-const UserSchema = require('./models/user');
-const GroupSchema = require('./models/group');
+const path = require("path");
 
 const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ['http://www.scholarknights.com', 'http://scholarknights.com'],
+  origin: [
+    'http://www.scholarknights.com',
+    'http://scholarknights.com',
+    'http://localhost:3000'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 app.options('*', cors());
 
-//  Connect to MongoDB Atlas
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log(" MongoDB Connected"))
-  .catch((err) => console.error(" MongoDB Connection Error:", err));
+  .then(() => console.log("? MongoDB Connected"))
+  .catch((err) => console.error("? MongoDB Connection Error:", err));
 
-// setting up email object for registering new users
+// Email
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -33,40 +37,33 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-var api = require("./api.js");
+// ? API Routes ? MUST COME BEFORE STATIC FILE SERVING
+const api = require("./api.js");
 api.setApp(app, mongoose, jwt, transporter);
 
+// CORS fallback
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PATCH, DELETE, OPTIONS'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
   next();
 });
 
-//  Basic Test Route
+// Basic Test
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-//  Start Server
-const PORT = 5001;
+// ? Serve React frontend
+app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
-const path = require("path");
-
-// Serve static React files from the build directory
-app.use(express.static(path.join(__dirname, "client", "build")));
-
-// For any other route, serve index.html so React Router can handle it
+// ? Wildcard fallback ? must come LAST
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
+// Start Server
+const PORT = 5001;
 app.listen(PORT, "0.0.0.0", () =>
-  console.log(` Server running on port ${PORT}`)
+  console.log(`?? Server running on port ${PORT}`)
 );
