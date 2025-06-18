@@ -1,54 +1,72 @@
-# React + TypeScript + Vite
+# ScholarKnights
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ScholarKnights** is a full-stack platform built to help UCF students find, join, and manage group study sessions. The app supports real-time filtering, session management, and account-based access across both web and mobile platforms.
 
-Currently, two official plugins are available:
+The project was built as part of a software engineering course and was deployed live with full authentication, course filtering, and group creation/joining functionality.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Core Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend (Web):** React.js, TypeScript, Vite, TailwindCSS
+- **Mobile App:** Flutter, Dart
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (with Mongoose ODM)
+- **Deployment:** Vercel (Frontend), DigitalOcean (Backend/API), MongoDB Atlas
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+## Live Links
+
+- Web App: [https://scholarknights.com](https://scholarknights.com)
+- Mobile App: (APK build available on request)
+- GitHub Repo: [https://github.com/kalypso2/scholar-knights](https://github.com/kalypso2/scholar-knights)
+
+---
+
+## Key Features
+
+- User registration and login with email verification
+- Create, search, and join study sessions by course, tags, and time
+- Role-based session controls (owner vs. member)
+- Password reset, pending invites, session details view
+- Responsive UI (mobile-first for web, dedicated Flutter app for mobile)
+- Backend validation, RESTful APIs, and JWT-based authentication
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- MongoDB (local or Atlas)
+- Dart/Flutter (for mobile build)
+
+### Setup
+
+#### Web
+```bash
+git clone https://github.com/kalypso2/scholar-knights.git
+cd scholar-knights/web
+npm install
+npm run dev
 ```
+### Tools Used
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Postman (API testing)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Figma (UI planning)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Trello (project tracking)
+
+GitHub Projects (milestone tracking)
+
+## Notes
+
+Uses MongoDB Atlas with user-course associations
+
+Role-based access control for session ownership
+
+Clean REST API separation for easier mobile/web integration
+
+Hosted backend at https://scholarknights.com/api/
